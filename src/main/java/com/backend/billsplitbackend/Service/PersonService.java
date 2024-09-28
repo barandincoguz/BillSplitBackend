@@ -91,7 +91,7 @@ public class PersonService implements IPersonService {
             if (moreBalans.compareTo(lessBalans) == 0) {
                 messageList.add(less.getAd() + " " + less.getSoyad() + "  →    →    →  " + more.getAd() +
                         " " + more.getSoyad() +
-                        "\t\n" + lessBalans.abs() + " TL" ); // lessBalans negatif olduğundan abs() alındı.
+    " odeme yapacak :  " + lessBalans.abs() + " TL" ); // lessBalans negatif olduğundan abs() alındı.
                 System.out.println("silindi :  " + more.getAd() + " " + less.getAd());
                 morethenAVG.pop();
                 lessthenAVG.pop();
@@ -103,7 +103,7 @@ public class PersonService implements IPersonService {
 
                 messageList.add(less.getAd() + " " + less.getSoyad() + "  →    →    →  " + more.getAd() +
                         " " + more.getSoyad() +
-                        "\t\n " + lessBalans.abs() + " TL" );
+                        "odeme yapacak : " + lessBalans.abs() + " TL" );
 
                 System.out.println(more.getAd() + " kalan alacağı para : " + moreBalans);
                 lessthenAVG.pop();
