@@ -103,7 +103,7 @@ public class PersonService implements IPersonService {
 
                 messageList.add(less.getAd() + " " + less.getSoyad() + "  →    →    →  " + more.getAd() +
                         " " + more.getSoyad() +
-                        "odeme yapacak : " + lessBalans.abs() + " TL" );
+                        " odeme yapacak : " + lessBalans.abs() + " TL" );
 
                 System.out.println(more.getAd() + " kalan alacağı para : " + moreBalans);
                 lessthenAVG.pop();
