@@ -72,12 +72,12 @@ public class UserController {
 
     @PostMapping("/signin")
     public ResponseEntity<AuthResponse> signin(@RequestBody User loginRequest) {
-        String username = loginRequest.getEmail();
+        String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
 
-        System.out.println(username + "-------" + password);
+        System.out.println(email + "-------" + password);
 
-        Authentication authentication = authenticate(username, password);
+        Authentication authentication = authenticate(email, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = JwtProvider.generateToken(authentication);
@@ -91,18 +91,18 @@ public class UserController {
     }
 
 
-    private Authentication authenticate(String username, String password) {
+    private Authentication authenticate(String email, String password) {
 
-        System.out.println(username + "---++----" + password);
+        System.out.println(email + "---++----" + password);
 
-        UserDetails userDetails = customUserDetails.loadUserByUsername(username);
+        UserDetails userDetails = customUserDetails.loadUserByUsername(email);
 
         System.out.println("Sig in in user details" + userDetails);
 
         if (userDetails == null) {
             System.out.println("Sign in details - null" + userDetails);
 
-            throw new BadCredentialsException("Invalid username and password");
+            throw new BadCredentialsException("Invalid email and password");
         }
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             System.out.println("Sign in userDetails - password mismatch" + userDetails);

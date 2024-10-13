@@ -44,27 +44,29 @@ public class EventController {
             return ResponseEntity.ok(events); // 200 OK ve etkinlik listesini döndür
         } catch (Exception e) {
             // Hata yönetimi ve loglama
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 Internal Server Error döndür
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 500 Internal Server Error döndür
         }
     }
 
-   @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
-       System.out.println("delete tetiklendi");
+        System.out.println("delete tetiklendi");
         return ResponseEntity.ok().build();
     }
+
     @PutMapping("/update/{id}")
     @SneakyThrows
     public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) {
-        Event updatedEvent = eventService.updateEvent(id,event) ;
+        Event updatedEvent = eventService.updateEvent(id, event);
         return ResponseEntity.status(HttpStatus.OK).body(updatedEvent);
     }
-      @GetMapping("/getEventById/{id}")
+
+    @GetMapping("/getEventById/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable Long id) {
-    Optional<Event> event = eventService.getEventById(id);
+        Optional<Event> event = eventService.getEventById(id);
         return ResponseEntity.status(HttpStatus.OK).body(event.get());
-      }
+    }
 
 }
 
