@@ -61,6 +61,8 @@ public class PersonControllerTests {
         assertEquals("John", response.getBody().getAd());
     }
 
+
+    //--------PARAMETRELİ TEST KISMI-------
     @ParameterizedTest
     @CsvSource({
             "1, Alice, Smith, 30.0",
