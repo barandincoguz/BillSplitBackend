@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -40,8 +40,12 @@ public class EventControllerTests {
 
         ResponseEntity<Event> response = eventController.createEvent(event);
 
+        // Assertion Types:
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(event, response.getBody());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().getName().contains("Team"));
+        assertFalse(response.getBody().getName().isEmpty());
     }
 
     @Test
@@ -55,8 +59,13 @@ public class EventControllerTests {
 
         ResponseEntity<List<Event>> response = eventController.getAllEvents();
 
+        // Assertion Types:
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().size());
+        assertNotNull(response.getBody());
+        assertArrayEquals(new String[]{"Team Lunch", "Office Party"},
+                response.getBody().stream().map(Event::getName).toArray());
+        assertTrue(response.getBody().stream().anyMatch(e -> e.getName().contains("Office")));
     }
 
     @Test
@@ -67,8 +76,11 @@ public class EventControllerTests {
 
         ResponseEntity<Void> response = eventController.deleteEvent(eventId);
 
+        // Assertion Types:
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNull(response.getBody());
         verify(eventService, times(1)).deleteEvent(eventId);
+        assertDoesNotThrow(() -> eventController.deleteEvent(eventId));
+        assertTimeoutPreemptively(Duration.ofMillis(500), () -> eventController.deleteEvent(eventId));
     }
-
 }

@@ -7,7 +7,6 @@ import com.backend.billsplitbackend.Service.EventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.mockito.MockitoAnnotations;
-
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,6 +22,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("EventService Tests")
 public class EventServiceTests {
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -63,7 +63,7 @@ public class EventServiceTests {
 
     @Test
     @DisplayName("Update Event - Success")
-    void testUpdateEvent() throws EventNotFoundException {
+    void testUpdateEvent_Success() throws EventNotFoundException {
         Long eventId = 1L;
         Event existingEvent = new Event(eventId, "Team Lunch", "2024-11-01", null);
         Event updatedEvent = new Event(eventId, "Team Dinner", "2024-11-02", null);
@@ -91,4 +91,24 @@ public class EventServiceTests {
         });
     }
 
+    @Test
+    @DisplayName("Delete Event - Success")
+    void testDeleteEvent_Success() {
+        Long eventId = 1L;
+        Event existingEvent = new Event(eventId, "Team Lunch", "2024-11-01", null);
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(existingEvent));
+        doNothing().when(eventRepository).deleteById(eventId);
+
+        assertDoesNotThrow(() -> eventService.deleteEvent(eventId));
+        verify(eventRepository, times(1)).deleteById(eventId);
+    }
+
+    @Test
+    @DisplayName("Delete Event - Not Found")
+    void testDeleteEvent_NotFound() {
+        Long eventId = 1L;
+        when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
+
+        assertThrows(EventNotFoundException.class, () -> eventService.deleteEvent(eventId));
+    }
 }

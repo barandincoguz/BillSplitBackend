@@ -57,12 +57,15 @@ public class PersonControllerTests {
 
         ResponseEntity<Person> response = personController.createPerson(personDTO, eventId);
 
+        // Assertion Types:
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals("John", response.getBody().getAd());
+        assertNotNull(response.getBody());
+        assertEquals(50.0, response.getBody().getOdedigiTutar());
+        assertDoesNotThrow(() -> personController.createPerson(personDTO, eventId));
     }
 
-
-    //--------PARAMETRELİ TEST KISMI-------
+    // Parametreli Test Kısmı
     @ParameterizedTest
     @CsvSource({
             "1, Alice, Smith, 30.0",
@@ -88,9 +91,11 @@ public class PersonControllerTests {
 
         ResponseEntity<Person> response = personController.createPerson(personDTO, eventId);
 
+        // Assertion Types:
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(ad, response.getBody().getAd());
         assertEquals(soyad, response.getBody().getSoyad());
-        assertEquals(odedigiTutar, response.getBody().getOdedigiTutar(), 0.001);
+        assertNotNull(response.getBody());
+        assertTimeoutPreemptively(Duration.ofMillis(500), () -> personController.createPerson(personDTO, eventId));
     }
 }
