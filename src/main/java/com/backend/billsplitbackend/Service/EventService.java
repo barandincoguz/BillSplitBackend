@@ -25,8 +25,12 @@ public class EventService implements IEventService{
     }
 
     @Override
-    public void deleteEvent(Long id) {
-        eventRepository.deleteById(id);
+    public void deleteEvent(Long id) throws EventNotFoundException {
+       Event event = eventRepository
+               .findById(id)
+               .orElseThrow(()-> new EventNotFoundException("Event with ID" + id + "Not Found" ));
+       eventRepository.delete(event);
+
     }
 
     @Override

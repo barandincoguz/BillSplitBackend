@@ -97,10 +97,10 @@ public class EventServiceTests {
         Long eventId = 1L;
         Event existingEvent = new Event(eventId, "Team Lunch", "2024-11-01", null);
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(existingEvent));
-        doNothing().when(eventRepository).deleteById(eventId);
+        doNothing().when(eventRepository).delete(existingEvent); // Mock delete(Event)
 
         assertDoesNotThrow(() -> eventService.deleteEvent(eventId));
-        verify(eventRepository, times(1)).deleteById(eventId);
+        verify(eventRepository, times(1)).delete(existingEvent); // Verify delete(Event)
     }
 
     @Test
@@ -108,6 +108,8 @@ public class EventServiceTests {
     void testDeleteEvent_NotFound() {
         Long eventId = 1L;
         when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
+
+
 
         assertThrows(EventNotFoundException.class, () -> eventService.deleteEvent(eventId));
     }

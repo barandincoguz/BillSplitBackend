@@ -1,6 +1,7 @@
 package com.backend.billsplitbackend.Controller;
 
 import com.backend.billsplitbackend.Entity.Event;
+import com.backend.billsplitbackend.Exceptions.EventNotFoundException;
 import com.backend.billsplitbackend.Service.EventService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -49,7 +50,7 @@ public class EventController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) throws EventNotFoundException {
         eventService.deleteEvent(id);
         System.out.println("delete tetiklendi");
         return ResponseEntity.ok().build();

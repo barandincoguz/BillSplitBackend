@@ -3,7 +3,6 @@ package com.backend.billsplitbackend.Controller;
 import com.backend.billsplitbackend.Config.JwtProvider;
 import com.backend.billsplitbackend.Entity.User;
 import com.backend.billsplitbackend.Repository.UserRepository;
-import com.backend.billsplitbackend.Service.UserService;
 import com.backend.billsplitbackend.Service.UserServiceImplementation;
 import com.backend.billsplitbackend.response.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;

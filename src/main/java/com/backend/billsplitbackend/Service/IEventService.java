@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface IEventService {
     Event createEvent(Event event);
     List<Event> getAllEvents();
-    void deleteEvent(Long id);
+    void deleteEvent(Long id) throws EventNotFoundException;
     Event updateEvent(Long id, Event event) throws EventNotFoundException;
     Optional<Event> getEventById(Long id);
     

@@ -2,6 +2,7 @@ package com.backend.billsplitbackend.ControllerTests;
 
 import com.backend.billsplitbackend.Controller.EventController;
 import com.backend.billsplitbackend.Entity.Event;
+import com.backend.billsplitbackend.Exceptions.EventNotFoundException;
 import com.backend.billsplitbackend.Service.EventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,7 +72,7 @@ public class EventControllerTests {
 
     @Test
     @DisplayName("Delete Event")
-    void testDeleteEvent() {
+    void testDeleteEvent() throws EventNotFoundException {
         Long eventId = 1L;
         doNothing().when(eventService).deleteEvent(eventId);
 
