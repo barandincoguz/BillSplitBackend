@@ -2,6 +2,7 @@ package com.backend.billsplitbackend.Suites;
 
 import com.backend.billsplitbackend.ControllerTests.EventControllerTests;
 import com.backend.billsplitbackend.ControllerTests.PersonControllerTests;
+import com.backend.billsplitbackend.ControllerTests.UserControllerTests;
 import org.junit.platform.suite.api.IncludePackages;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
@@ -13,6 +14,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @SelectClasses({
         EventControllerTests.class,
         PersonControllerTests.class,
+		UserControllerTests.class
 })
 
 public class ControllerSuite {
