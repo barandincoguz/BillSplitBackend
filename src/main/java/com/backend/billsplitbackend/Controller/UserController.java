@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,7 @@ public class UserController {
         String fullName = user.getUsername();
         String role = user.getRole();
 
-        Optional<User> isEmailExist = userRepository.findByEmail(email);
+        Optional<User> isEmailExist = userRepository.findUserByEmail(email);
         if (isEmailExist.isPresent()) {
             //throw new Exception("Email Is Already Used With Another Account");
             System.out.println("email exist with name : " + email);
@@ -91,26 +92,33 @@ public class UserController {
 
 
     private Authentication authenticate(String email, String password) {
+        try {
+            // This will throw UsernameNotFoundException if user is not found
+            UserDetails userDetails = customUserDetails.loadUserByUsername(email);
 
-        System.out.println(email + "---++----" + password);
+            // Log details for debugging
+            System.out.println("User Details: " + userDetails);
+            System.out.println("Provided Password: " + password);
+            System.out.println("Stored Encoded Password: " + userDetails.getPassword());
 
-        UserDetails userDetails = customUserDetails.loadUserByUsername(email);
+            // Check password
+            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+                System.out.println("Password mismatch for user: " + email);
+                throw new BadCredentialsException("Invalid password");
+            }
 
-        System.out.println("Sig in in user details" + userDetails);
+            // Create authentication token
+            return new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities()
+            );
 
-        if (userDetails == null) {
-            System.out.println("Sign in details - null" + userDetails);
-
-            throw new BadCredentialsException("Invalid email and password");
+        } catch (UsernameNotFoundException e) {
+            // More specific logging
+            System.out.println("User not found: " + email);
+            throw new BadCredentialsException("Invalid email and password", e);
         }
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            System.out.println("Sign in userDetails - password mismatch" + userDetails);
-
-            throw new BadCredentialsException("Invalid password");
-
-        }
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
     }
 
 

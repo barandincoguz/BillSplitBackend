@@ -18,39 +18,39 @@ import static org.mockito.Mockito.*;
 
 public class UserServiceTests {
 
-	  @InjectMocks
-	  private UserServiceImplementation userService;
+    @InjectMocks
+    private UserServiceImplementation userService;
 
-	  @Mock
-	  private UserRepository userRepository;
+    @Mock
+    private UserRepository userRepository;
 
-	  @BeforeEach
-	  void setUp() {
-			MockitoAnnotations.initMocks(this);
-	  }
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
-	  @Test
-	  void testLoadUserByUsername_UserFound() {
-			User user = new User();
-			user.setEmail("test@test.com");
-			user.setPassword("encoded_password");
+    @Test
+    void testLoadUserByUsername_UserFound() {
+        User user = new User();
+        user.setEmail("test@test.com");
+        user.setPassword("encoded_password");
 
-			when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(userRepository.findUserByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
-			UserDetails userDetails = userService.loadUserByUsername(user.getEmail());
+        UserDetails userDetails = userService.loadUserByUsername(user.getEmail());
 
-			assertNotNull(userDetails);
-			assertEquals(user.getEmail(), userDetails.getUsername());
-			assertEquals(user.getPassword(), userDetails.getPassword());
-	  }
+        assertNotNull(userDetails);
+        assertEquals(user.getEmail(), userDetails.getUsername());
+        assertEquals(user.getPassword(), userDetails.getPassword());
+    }
 
-	  @Test
-	  void testLoadUserByUsername_UserNotFound() {
-			String email = "nonexistent@test.com";
-			when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+    @Test
+    void testLoadUserByUsername_UserNotFound() {
+        String email = "nonexistent@test.com";
+        when(userRepository.findUserByEmail(email)).thenReturn(Optional.empty());
 
-			assertThrows(UsernameNotFoundException.class, () -> {
-				  userService.loadUserByUsername(email);
-			});
-	  }
+        assertThrows(UsernameNotFoundException.class, () -> {
+            userService.loadUserByUsername(email);
+        });
+    }
 }
