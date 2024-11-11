@@ -23,14 +23,24 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class PersonService implements IPersonService {
-    
+
     private final PersonRepository personRepository;
     private final EventRepository eventRepository;
 
     @Override
-    public Person createPerson(Person person) {
-        System.out.println("Person  " + person.toString()+ " created.");
-         personRepository.save(person);
+    public Person createPerson(Person person) throws IllegalArgumentException {
+        if (person.getAd() == null) {
+            throw new IllegalArgumentException("Person name cannot be null");
+
+        }
+        if (person == null) {
+            throw new IllegalArgumentException("Person cannot be null");
+        }
+        if (person.getOdedigiTutar() < 0) {
+            throw new IllegalArgumentException("OdedigiTutar must be non-negative");
+        }
+        System.out.println("Person  " + person.toString() + " created.");
+        personRepository.save(person);
         return person;
     }
 
@@ -73,8 +83,8 @@ public class PersonService implements IPersonService {
                 .filter(w -> w.getBalans() > 0)
                 .collect(Collectors.toCollection(Stack::new));
         System.out.println("ortalama : " + avg);
-        messageList.add("Hesap Toplamı : " + total + " TL" );
-        messageList.add("Kişi Başı Ödeme : " + avg + " TL"  );
+        messageList.add("Hesap Toplamı : " + total + " TL");
+        messageList.add("Kişi Başı Ödeme : " + avg + " TL");
         // BİLLSPLİT ALGORİTMASI
         while (!morethenAVG.isEmpty() && !lessthenAVG.isEmpty()) {
 
@@ -91,7 +101,7 @@ public class PersonService implements IPersonService {
             if (moreBalans.compareTo(lessBalans) == 0) {
                 messageList.add(less.getAd() + " " + less.getSoyad() + "  →    →    →  " + more.getAd() +
                         " " + more.getSoyad() +
-    " odeme yapacak :  " + lessBalans.abs() + " TL" ); // lessBalans negatif olduğundan abs() alındı.
+                        " odeme yapacak :  " + lessBalans.abs() + " TL"); // lessBalans negatif olduğundan abs() alındı.
                 System.out.println("silindi :  " + more.getAd() + " " + less.getAd());
                 morethenAVG.pop();
                 lessthenAVG.pop();
@@ -103,7 +113,7 @@ public class PersonService implements IPersonService {
 
                 messageList.add(less.getAd() + " " + less.getSoyad() + "  →    →    →  " + more.getAd() +
                         " " + more.getSoyad() +
-                        " odeme yapacak : " + lessBalans.abs() + " TL" );
+                        " odeme yapacak : " + lessBalans.abs() + " TL");
 
                 System.out.println(more.getAd() + " kalan alacağı para : " + moreBalans);
                 lessthenAVG.pop();
@@ -113,7 +123,7 @@ public class PersonService implements IPersonService {
 
                 messageList.add(less.getAd() + " " + less.getSoyad() + "  →    →    →  " + more.getAd() +
                         " " + more.getSoyad() +
-                        "\t\n" + moreBalans.doubleValue() + " TL" );
+                        "\t\n" + moreBalans.doubleValue() + " TL");
 
                 System.out.println(less.getAd() + " vereceği para : " + lessBalans.doubleValue());
                 morethenAVG.pop();
@@ -121,6 +131,7 @@ public class PersonService implements IPersonService {
         }
         return messageList.stream().toList();
     }
+
     @Transactional
     @Override
     public void updatePerson(int index, Person person) throws PersonNotFoundException, EventNotFoundException {
@@ -160,5 +171,4 @@ public class PersonService implements IPersonService {
     }
 
 
- 
 }

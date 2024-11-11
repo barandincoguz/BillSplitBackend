@@ -4,6 +4,8 @@ import com.backend.billsplitbackend.Entity.Event;
 import com.backend.billsplitbackend.Exceptions.EventNotFoundException;
 import com.backend.billsplitbackend.Service.EventService;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @RequestMapping("/api/event")
 @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*")
 public class EventController {
+
     private final EventService eventService;
 
     @PostMapping("/createEvent")
