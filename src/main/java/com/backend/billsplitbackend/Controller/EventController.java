@@ -4,8 +4,6 @@ import com.backend.billsplitbackend.Entity.Event;
 import com.backend.billsplitbackend.Exceptions.EventNotFoundException;
 import com.backend.billsplitbackend.Service.EventService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +20,7 @@ public class EventController {
 
     private final EventService eventService;
 
+
     @PostMapping("/createEvent")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         if (event == null) {
@@ -36,6 +35,7 @@ public class EventController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 Internal Server Error döndür
         }
     }
+
 
     @GetMapping("/getAllEvents")
     public ResponseEntity<List<Event>> getAllEvents() {

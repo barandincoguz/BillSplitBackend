@@ -18,9 +18,9 @@ public class Person {
     private String ad;
     @Column(name = "soyad", nullable = false)
     private String soyad;
-    @Column(name ="odedigiTutar")
+    @Column(name = "odedigiTutar")
     private double odedigiTutar;
-    @ManyToOne(fetch = FetchType.EAGER , cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "event_id")
     private Event event;
 
